@@ -63,7 +63,7 @@
     # open() query tags and create file
     # readlink() just query
     # rename() may update tags later when file name and extensions also as tags
-  # TagStat: file stat, with tag support. (tag list)
+  # TagStat`:` file stat, with tag support. (tag list)
   # Logger: for debug and logging.
   # TagDB: index of tags, maintain tags->file & file->tags mapping and query.
 
@@ -75,6 +75,6 @@
 ===Toolkit: (Later)===
   # mkfs.tagfs  script to make TagFS partition, build meta-data database or anything else.
   # mount.tagfs  script for mounting, check meta-data database, etc.
-  # addtags [option] file [tags]
-  # rmtags [option] [file] [tags]
+  # addtags `[`option`]` file `[`tags`]`
+  # rmtags `[`option`]` `[`file`]` `[`tags`]`
 		
