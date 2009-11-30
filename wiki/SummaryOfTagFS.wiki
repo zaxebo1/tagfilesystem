@@ -2,8 +2,8 @@
 #labels Featured,Phase-Requirements,Phase-Design
 
 =TagFS - Tag File System=
-
-==Related projects and papers==
+----
+==Related projects and papers:==
   # http://www.tagsistant.net/
   # http://code.google.com/p/xtagfs/
   # http://code.google.com/p/dhtfs/
@@ -21,18 +21,17 @@
     # The damn patent: http://www.patents.com/Semantic-file-system/US7617250/en-US/
     # http://www.hipc.org/hipc2006/posters/semfs.pdf
     # The Sile Model - A Semantic File System Infrastructure for the Desktop http://data.semanticweb.org/conference/eswc/2009/paper/70/html
-
-==Requirements==
-
-===Description===
+----
+==Requirements:==
+===Description:===
   Design and implement a tag-based file system using Python-FUSE.
   This file system uses tags rather than hierarchy directory tree structure to organize files(object may be better). To be compatible with traditional file system in both API and user interfaces, directory names in a file path are considered to be tags of a file. So `ls -l /homework/os/user_space_thread_library/source_file/` will do a tag query like: `select * from files where tags have "homework" AND "os" AND "user_space_thread_library" AND "source_file"`.
 
-===Features===
+===Features:===
   # Initially an overlay on top of traditional file system APIs.
   # All files in the same directory from a traditional file system view.
   # A .tagdb meta-date file as tags database and index for path query.
-  # File name is defined to be: {UUID}_{readable-name}
+  # File name is defined to be: {UUID}`_`{readable-name}
   # To locate an exact file, there are two methods:
     # Do a tag query, and the result has only one file and the file name is same to the last tag of the path.
     # Use a UUID.
@@ -52,10 +51,9 @@
     # ln means add new tags.
     # rm means remove some tags or the file if all tags are listed in the path.
   # File name and the extension may also as tags. (Later)  
-
-==Design==
-
-===Code===
+----
+==Design:==
+===Code:===
   # TagFS: for file system operations, focus on:
     # getattr() add tags as attributes
     # readdir() query tags
@@ -69,7 +67,7 @@
   # Logger: for debug and logging.
   # TagDB: index of tags, maintain tags->file & file->tags mapping and query.
 
-===Misc===
+===Misc:===
   # Optimize TagDB, organize index in B+tree or radix tree.
   # Optimize tags query algorithm to utilize: multi-core?
   # Learning relations between similar tags like 'photo' and 'picture' then optimize tag database.
