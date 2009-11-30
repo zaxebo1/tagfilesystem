@@ -1,0 +1,82 @@
+#summary Summary of TagFS
+#labels Featured,Phase-Requirements,Phase-Design
+
+=TagFS - Tag File System=
+
+==Related projects and papers==
+  # http://www.tagsistant.net/
+  # http://code.google.com/p/xtagfs/
+  # http://code.google.com/p/dhtfs/
+  # http://code.google.com/p/tag-fs/
+  # http://github.com/xlevus/StagFS
+  # TagFS:
+    # http://www.aifb.kit.edu/web/Inproceedings1140
+    # http://www.slideshare.net/xamde/tagfs-tag-semantics-for-hierarchical-file-systems-2183080
+  # Tag file system in D and its survey: http://nascent.freeshell.org/programming/TagFS/
+  # Semantic FS:
+    # Copernicus: A Scalable, High-Performance Semantic File System http://www.ssrc.ucsc.edu/Papers/ssrctr-09-06.pdf
+    # Semantic File Systems (A survey) http://www.objs.com/survey/OFSExt.htm
+    # Semantic File Systems (paper by MIT) http://www.psrg.csail.mit.edu/history/publications/Papers/sfsabs.htm
+    # http://semanticweb.org/wiki/SemFS
+    # The damn patent: http://www.patents.com/Semantic-file-system/US7617250/en-US/
+    # http://www.hipc.org/hipc2006/posters/semfs.pdf
+    # The Sile Model - A Semantic File System Infrastructure for the Desktop http://data.semanticweb.org/conference/eswc/2009/paper/70/html
+
+==Requirements==
+
+===Description===
+  Design and implement a tag-based file system using Python-FUSE.
+  This file system uses tags rather than hierarchy directory tree structure to organize files(object may be better). To be compatible with traditional file system in both API and user interfaces, directory names in a file path are considered to be tags of a file. So `ls -l /homework/os/user_space_thread_library/source_file/` will do a tag query like: `select * from files where tags have "homework" AND "os" AND "user_space_thread_library" AND "source_file"`.
+
+===Features===
+  # Initially an overlay on top of traditional file system APIs.
+  # All files in the same directory from a traditional file system view.
+  # A .tagdb meta-date file as tags database and index for path query.
+  # File name is defined to be: {UUID}_{readable-name}
+  # To locate an exact file, there are two methods:
+    # Do a tag query, and the result has only one file and the file name is same to the last tag of the path.
+    # Use a UUID.
+  # Tags and index format:
+    # tags hash table for all files with 'tag' key
+    # files hash table for all tags attached to a file
+    # Double references causes complexity. But OK now.
+  # Query, given a path:
+    # As a UUID, find in files hash table, if there, done, else, continue.
+    # Get the intersection of sets of tags in the path.
+    # If the result is an exact file according to 5.1, then do file operation, else as a directory.
+  # Unlink: remove all tags in the path and if tag set of the file is empty, delete it.    
+  # Link: add new tags.
+  # So:
+    # cp means create a copied file with new tags.
+    # mv means remove some tags and add some new tags.
+    # ln means add new tags.
+    # rm means remove some tags or the file if all tags are listed in the path.
+  # File name and the extension may also as tags. (Later)  
+
+==Design==
+
+===Code===
+  # TagFS: for file system operations, focus on:
+    # getattr() add tags as attributes
+    # readdir() query tags
+    # rmdir() remove the tag from all files with it
+    # mkdir() create a new tag, without associated files
+    # symlink/link/unlink() operate on tags
+    # open() query tags and create file
+    # readlink() just query
+    # rename() may update tags later when file name and extensions also as tags
+  # TagStat: file stat, with tag support. (tag list)
+  # Logger: for debug and logging.
+  # TagDB: index of tags, maintain tags->file & file->tags mapping and query.
+
+===Misc===
+  # Optimize TagDB, organize index in B+tree or radix tree.
+  # Optimize tags query algorithm to utilize: multi-core?
+  # Learning relations between similar tags like 'photo' and 'picture' then optimize tag database.
+
+===Toolkit: (Later)===
+  # mkfs.tagfs  script to make TagFS partition, build meta-data database or anything else.
+  # mount.tagfs  script for mounting, check meta-data database, etc.
+  # addtags [option] file [tags]
+  # rmtags [option] [file] [tags]
+		
