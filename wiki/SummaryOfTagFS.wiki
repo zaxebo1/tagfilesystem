@@ -42,7 +42,7 @@
   # Query, given a path:
     # As a UUID, find in files hash table, if there, done, else, continue.
     # Get the intersection of sets of tags in the path.
-    # If the result is an exact file according to 5.1, then do file operation, else as a directory.
+    # Whether a path is file or directory should be decided with the help of TagFS class functions because it knows what the current target is. Filename should not be in the tag set of a file. And put file name in the middle of a path is invalid.
   # Unlink: remove all tags in the path and if tag set of the file is empty, delete it.    
   # Link: add new tags.
   # So:
