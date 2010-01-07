@@ -55,14 +55,14 @@
 ==Design:==
 ===Code:===
   # TagFS: for file system operations, focus on:
-    # getattr() add tags as attributes
+    # getxattr() add tags as attributes
     # readdir() query tags
     # rmdir() remove the tag from all files with it
     # mkdir() create a new tag, without associated files
     # symlink/link/unlink() operate on tags
     # open() query tags and create file
-    # readlink() just query
-    # rename() may update tags later when file name and extensions also as tags
+    # readlink() not supported
+    # rename() updates tags
   # TagStat`:` file stat, with tag support. (tag list)
   # Logger: for debug and logging.
   # TagDB: index of tags, maintain tags->file & file->tags mapping and query.
@@ -77,4 +77,6 @@
   # mount.tagfs  script for mounting, check meta-data database, etc.
   # addtags `[`option`]` file `[`tags`]`
   # rmtags `[`option`]` `[`file`]` `[`tags`]`
+  # lstags.py command to list tags of a file and 'sub-tags' under a directory
+
 		
